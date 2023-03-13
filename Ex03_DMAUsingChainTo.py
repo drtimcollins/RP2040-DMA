@@ -45,16 +45,11 @@ dma[1].enable_notrigger()
 
 try:
     while(True):
-#    print("DMA0: ",hex(machine.mem32[ dma[0].CHx_CTRL_TRIG ]))
-#    print("Count 0: ", machine.mem32[ dma[0].CHx_TRANS_COUNT ])    
-#    print("DMA1: ",hex(machine.mem32[ dma[1].CHx_CTRL_TRIG ]))
-#    print("Count 1: ", machine.mem32[ dma[1].CHx_TRANS_COUNT ])
         if(not dma[0].is_busy()):
             machine.mem32[dma[0].READ_ADDR] = uctypes.addressof( buf0 )
         if(not dma[1].is_busy()):
             machine.mem32[dma[1].READ_ADDR] = uctypes.addressof( buf1 )
         pass
-#        time.sleep(.05)
     
 except (KeyboardInterrupt, Exception) as e:    
     dma[0].disable()
