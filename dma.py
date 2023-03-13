@@ -11,6 +11,9 @@ class DMA:
     IRQ_QUIET = const(0x01 << 21)
     BUSY      = const(0x01 << 24)
     CH_ABORT   = const(0x50000444)
+    SIZE_BYTE = const(0x00 << 2)
+    SIZE_HALFWORD = const(0x01 << 2)
+    SIZE_WORD = const(0x02 << 2)
     
     DREQ_PIO0_TX0 = const(0x00 << 15)
     DREQ_PIO0_TX1 = const(0x01 << 15)
@@ -68,7 +71,7 @@ class DMA:
         self.CTRL_TRIG     = DMA.DMA_BASE + 0x0C + channelOffset
         self.AL1_CTRL      = DMA.DMA_BASE + 0x10 + channelOffset
     
-    def config( self, *, read_addr, write_addr, trans_count, read_inc, write_inc, treq_sel=-1, chain_to=-1 ):
+    def config( self, *, read_addr, write_addr, trans_count, read_inc, write_inc, treq_sel=-1, chain_to=-1, data_size=0):
         if(chain_to == -1):
             chain_to = self.channel
         if(treq_sel == -1):
@@ -82,7 +85,7 @@ class DMA:
             ctrl = DMA.INCR_READ
         if( write_inc ):
             ctrl |= DMA.INCR_WRITE
-        machine.mem32[ self.CTRL_TRIG ] = ctrl | (chain_to << 11) | treq_sel | DMA.IRQ_QUIET
+        machine.mem32[ self.CTRL_TRIG ] = ctrl | (chain_to << 11) | treq_sel | DMA.IRQ_QUIET | data_size
 
     def enable( self ):
         machine.mem32[ self.CTRL_TRIG ] |= DMA.EN
