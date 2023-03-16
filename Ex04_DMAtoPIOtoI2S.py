@@ -53,19 +53,15 @@ class Audio:
             sideset_base=self.PIN_BCK,
 #             out_shiftdir=PIO.SHIFT_RIGHT
             )
- 
-        self.sm.active(1)
-        print("PIO Active")
-        
+         
         self.buf = bytearray(40 * len(sine_wave_table))
         for i in range(10*len(sine_wave_table)):
-            x = ((sine_wave_table[i % len(sine_wave_table)] - 0x7fff) // 2).to_bytes(2,'small')
-            self.buf[(i*4):(i*4+1)] = x
-            self.buf[(i*4+2):(i*4+3)] = x
-            
-#        for i in range(10*len(sine_wave_table)):
-#            print(self.buf[i*4]*256+self.buf[i*4+1])
-
+            x = (sine_wave_table[i % len(sine_wave_table)] - 0x8000) // 4
+            self.buf[(i*4)] = x & 0xFF
+            self.buf[(i*4+1)] = (x & 0xFF00 ) >> 8
+            self.buf[(i*4+2)] = x & 0xFF
+            self.buf[(i*4+3)] = (x & 0xFF00 ) >> 8
+        
 Pico_Audio = Audio()
 
 DMA.abort_all()
@@ -95,24 +91,27 @@ dma[1].config(
     chain_to = 0
 )
 
+Pico_Audio.sm.active(1)
 dma[0].enable()
 dma[1].enable_notrigger()
 
-toReset = [False, True]
+nextBuffer = 1
 try:
     while(True):
-        if(toReset[0] and not dma[0].is_busy()):
+        if(nextBuffer == 0 and not dma[0].is_busy()):
             machine.mem32[dma[0].READ_ADDR] = uctypes.addressof( Pico_Audio.buf )
-            toReset=[False, True]
+            nextBuffer = 1
             gp.high()
-        if(toReset[1] and not dma[1].is_busy()):
+        if(nextBuffer == 1 and not dma[1].is_busy()):
             machine.mem32[dma[1].READ_ADDR] = uctypes.addressof( Pico_Audio.buf )
-            toReset=[True, False]
+            nextBuffer = 0
             gp.low()
         pass    
 
 except (KeyboardInterrupt, Exception) as e:
     print("caught exception {} {}".format(type(e).__name__, e))
+    Pico_Audio.sm.active(0)
+    gp.low()
 
 
 
