@@ -5,9 +5,10 @@ To run the examples, copy the 'dma.py' file onto the RP2040 device first.
 
 ## Examples
 
-*Ex01_DMASimpleArrayCopy* - Just copies bytes from one array to another using DMA
+**Ex01_DMASimpleArrayCopy.py** - Just copies bytes from one array to another using DMA.
 
-*Ex02_DMAtoPIOtoLED* - Creates a simple PIO to shift bits from the PIO FIFO to the onboard LED (pico board - pin 25). DMA is used to copy data from a bytearray to the PIO output buffer at a rate determined by the PIO clock
+**Ex02_DMAtoPIOtoLED.py** - Creates a simple PIO to shift bits from the PIO FIFO to the onboard LED (pico board - pin 25). DMA is used to copy data from a bytearray to the PIO output buffer at a rate determined by the PIO clock.
 
-*Ex03_DMAUsingChainTo* - Same PIO as Ex02 but uses two DMA controllers with separate buffers configured using the chain_to field to work in 'ping-pong' mode. Each DMA controller automatically triggers the other at the end of its buffer to enable continuous transmission.
+**Ex03_DMAUsingChainTo.py** - Same PIO as Ex02 but uses two DMA controllers with separate buffers configured using the chain_to field to work in 'ping-pong' mode. Each DMA controller automatically triggers the other at the end of its buffer to enable continuous transmission.
 
+**Ex04_DMAtoPIOtoI2S.py** - Uses the ping-pong configuration from Ex03 to stream a 1 kHz sine wave test tone audio to a PIO I2S output.
