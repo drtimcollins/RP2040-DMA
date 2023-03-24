@@ -48,8 +48,8 @@ class Audio:
             Audio_PIO,
             freq=FREQ * 64,
             out_base = self.PIN_DATA,
-            set_base=self.PIN_DATA,
-            jmp_pin = self.PIN_DATA,
+            #set_base=self.PIN_DATA,
+            #jmp_pin = self.PIN_DATA,
             sideset_base=self.PIN_BCK,
 #             out_shiftdir=PIO.SHIFT_RIGHT
             )
