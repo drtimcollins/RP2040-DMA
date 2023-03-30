@@ -12,3 +12,7 @@ To run the examples, copy the 'dma.py' file onto the RP2040 device first.
 **Ex03_DMAUsingChainTo.py** - Same PIO as Ex02 but uses two DMA controllers with separate buffers configured using the chain_to field to work in 'ping-pong' mode. Each DMA controller automatically triggers the other at the end of its buffer to enable continuous transmission.
 
 **Ex04_DMAtoPIOtoI2S.py** - Uses the ping-pong configuration from Ex03 to stream a 1 kHz sine wave test tone audio to a PIO I2S output.
+
+**Ex05_ADCandI2S.py** - Uses an MCP3202 ADC to input an audio stream and outputs as an I2S stream. Viper-compliant signal processing code can be added to the processBuffer() function.
+
+**Ex05a_ADCandI2S.py** - Same as Ex05_ADCandI2S.py but the I2S format is a non-standard variant in terms of the alignment of the LR clock.
