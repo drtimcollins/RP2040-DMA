@@ -3,6 +3,7 @@
 # SCLK = 64 x Fs, MCLK = 256 x Fs (target device is CS4272).
 # Needs dma.py and audioIO.py copied onto the micropython device
 # NOT TESTED YET - I DO NOT KNOW IF THIS WILL WORK!!
+# Loopback test connecting DataOut to DataIn is fine but not tried with a real codec yet.
 
 from audioIO import Audio
 from dma import DMA

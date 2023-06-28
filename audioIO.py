@@ -1,3 +1,7 @@
+# Duplex I2S PIO driver
+# Set-up is for stereo 24-bit operation at 48kHz
+# SCLK = 64 x Fs, MCLK = 256 x Fs (target device is CS4272).
+
 import utime, uctypes
 from rp2 import PIO, asm_pio, StateMachine
 from machine import Pin, mem32
