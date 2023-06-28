@@ -19,7 +19,7 @@ PIO0_BASE_RXF0 = PIO0_BASE + 0x20
 
 buf = bytes(range(256))
 rxbuf = bytearray(256)
-#print(rxbuf)
+print(rxbuf)
 
 i2s.active(True)
 
@@ -52,7 +52,7 @@ while( dma[0].is_busy() and dma[1].is_busy() ):
 dma[0].disable()
 dma[1].disable()
 i2s.active(False)
-#print(rxbuf)
+print(rxbuf)
 
 
 
