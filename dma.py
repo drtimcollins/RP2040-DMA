@@ -1,5 +1,9 @@
-import uctypes, time, machine
+import time
+
+import machine
+import uctypes
 from micropython import const
+
 
 class DMA:
     DMA_BASE  = 0x50000000
@@ -72,6 +76,18 @@ class DMA:
         self.AL1_CTRL      = DMA.DMA_BASE + 0x10 + channelOffset
     
     def config( self, *, read_addr, write_addr, trans_count, read_inc, write_inc, treq_sel=-1, chain_to=-1, data_size=0):
+        """
+        Configure the DMA channel.
+
+        - read_addr : Read address
+        - write_addr : Write address
+        - trans_count : Transfer count
+        - read_inc : Increment read address
+        - write_inc : Increment write address
+        - treq_sel : Transfer Request signal is selected by treq_sel. If treq_sel is -1, then the channel is permanently enabled.
+        - chain_to : Chain to the given channel number. If chain_to is -1, then the channel is not chained.
+        - data_size : Data size. 0=byte, 1=halfword, 2=word
+        """
         if(chain_to == -1):
             chain_to = self.channel
         if(treq_sel == -1):
