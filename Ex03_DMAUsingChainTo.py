@@ -1,6 +1,18 @@
-from machine import Pin
-import rp2, time, uctypes
+"""
+Creates a simple PIO to shift bits from the PIO FIFO to the onboard LED (pico board - pin 25). 
+DMA is used to copy data from a bytearray to the PIO output buffer at a rate determined by the PIO clock.
+
+Same PIO as Ex02 but uses two DMA controllers with separate buffers configured using the chain_to field to work in 'ping-pong' mode. 
+Each DMA controller automatically triggers the other at the end of its buffer to enable continuous transmission.
+"""
+
+import time
+
+import rp2
+import uctypes
 from dma import DMA
+from machine import Pin, mem32
+
 
 @rp2.asm_pio(out_init=rp2.PIO.OUT_LOW, autopull=True)
 def streamToLed():
@@ -46,10 +58,9 @@ dma[1].enable_notrigger()
 try:
     while(True):
         if(not dma[0].is_busy()):
-            machine.mem32[dma[0].READ_ADDR] = uctypes.addressof( buf0 )
+            mem32[dma[0].READ_ADDR] = uctypes.addressof( buf0 )
         if(not dma[1].is_busy()):
-            machine.mem32[dma[1].READ_ADDR] = uctypes.addressof( buf1 )
-        pass
+            mem32[dma[1].READ_ADDR] = uctypes.addressof( buf1 )
     
 except (KeyboardInterrupt, Exception) as e:    
     dma[0].disable()

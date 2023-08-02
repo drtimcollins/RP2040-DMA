@@ -1,7 +1,12 @@
-import utime, uctypes
-from rp2 import PIO, asm_pio
-from machine import Pin
+"""
+Uses an MCP3202 ADC to input an audio stream and outputs as an I2S stream. Viper-compliant signal processing code can be added to the processBuffer() function.
+"""
+import machine
+import rp2
+import uctypes
 from dma import DMA
+from machine import Pin
+from rp2 import PIO, asm_pio
 
 PIN_DATA = 18
 PIN_BCK = 16
@@ -106,10 +111,10 @@ try:
             machine.mem32[dma[1].READ_ADDR] = uctypes.addressof( Pico_Audio.buf )
             nextBuffer = 0
             gp.low()
-        pass    
+
 
 except (KeyboardInterrupt, Exception) as e:
-    print("caught exception {} {}".format(type(e).__name__, e))
+    print(f"caught exception {type(e).__name__} {e}")
     Pico_Audio.sm.active(0)
     gp.low()
 
