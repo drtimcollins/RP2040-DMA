@@ -1,7 +1,13 @@
-from rp2 import PIO, asm_pio
-from machine import Pin
+"""
+Creates a simple PIO to shift bits from the PIO FIFO to the onboard LED (pico board - pin 25). 
+DMA is used to copy data from a bytearray to the PIO output buffer at a rate determined by the PIO clock.
+"""
+
+import uctypes
 from dma import DMA
-import time, uctypes
+from machine import Pin
+from rp2 import PIO, StateMachine, asm_pio
+
 
 @asm_pio(out_init=PIO.OUT_LOW, autopull=True)
 def streamToLed():
@@ -9,7 +15,7 @@ def streamToLed():
     
 led = Pin(25)
 led.init(Pin.OUT)
-sm = rp2.StateMachine(0)
+sm = StateMachine(0)
 sm.init(streamToLed, freq=2000, out_base = led, set_base=led)
 
 buf = bytearray(300)
@@ -31,7 +37,7 @@ dma.config(
     trans_count = len( buf ), 
     read_inc = True, 
     write_inc = False, 
-    treq_sel = DMA.DREQ_PIO0_TX0 
+    treq_sel = DMA.DREQ_PIO0_TX0 # type: ignore
 )
 dma.enable()
 while( dma.is_busy() ):

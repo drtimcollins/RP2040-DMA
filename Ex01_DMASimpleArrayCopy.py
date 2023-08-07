@@ -1,6 +1,9 @@
 import time
+
+import machine
 import uctypes
 from dma import DMA
+
 
 def test_dma():
     dma = DMA(0)

@@ -1,12 +1,15 @@
 # Inputs a mono audio signal from channel 0 of an MCP3202
 # Sends signal to one channel of the I2S output
 # Needs dma.py and MCP3203mono.py copied onto the micropython device
-import utime, uctypes
-from rp2 import PIO, asm_pio
-from machine import Pin
+
+import machine
+import rp2
+import uctypes
 from dma import DMA
+from machine import Pin
 from MCP3202mono import MCP3202
-import array
+from micropython import const
+from rp2 import PIO, asm_pio
 
 PIN_DATA = 18
 PIN_BCK = 16
