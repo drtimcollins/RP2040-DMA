@@ -1,10 +1,13 @@
+*Note: As of December 2023, I would recommend anyone wanting to make use of the RP2040 DMA controller using MicroPython to update to v1.22.0 (or later). The rp2.DMA class is now part of the release and achieves a lot of the functionality that the library in this repository was written for.*
+
+For historical interest, however...
+
 # RP2040 DMA
- Micropython library for the RP2040 DMA controller
+Micropython library for the RP2040 DMA controller.
 
 To run the examples, copy the 'dma.py' file onto the RP2040 device first.
 
 ## Examples
-
 **Ex01_DMASimpleArrayCopy.py** - Just copies bytes from one array to another using DMA.
 
 **Ex02_DMAtoPIOtoLED.py** - Creates a simple PIO to shift bits from the PIO FIFO to the onboard LED (pico board - pin 25). DMA is used to copy data from a bytearray to the PIO output buffer at a rate determined by the PIO clock.
